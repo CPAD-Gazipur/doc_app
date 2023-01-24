@@ -1,3 +1,5 @@
+import 'package:doc_app/screens/auth_screen.dart';
+import 'package:doc_app/utils/config.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -6,61 +8,39 @@ void main() {
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
+
+  static final navigatorKey = GlobalKey<NavigatorState>();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navigatorKey,
       title: 'DocApp',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'DocApp'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          //
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+        inputDecorationTheme: const InputDecorationTheme(
+          focusColor: Config.primaryColor,
+          border: Config.outlinedBorder,
+          focusedBorder: Config.focusBorder,
+          errorBorder: Config.errorBorder,
+          enabledBorder: Config.outlinedBorder,
+          floatingLabelStyle: TextStyle(color: Config.primaryColor),
+          prefixIconColor: Colors.black38,
+        ),
+        scaffoldBackgroundColor: Colors.white,
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          backgroundColor: Config.primaryColor,
+          selectedItemColor: Colors.white,
+          showSelectedLabels: true,
+          showUnselectedLabels: false,
+          unselectedItemColor: Colors.grey.shade700,
+          elevation: 10,
+          type: BottomNavigationBarType.fixed,
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const AuthScreen(),
+      },
     );
   }
 }
