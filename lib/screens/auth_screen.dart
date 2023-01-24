@@ -1,3 +1,7 @@
+import 'package:doc_app/components/login_form.dart';
+import 'package:doc_app/components/socail_login_button.dart';
+import 'package:doc_app/utils/config.dart';
+import 'package:doc_app/utils/text.dart';
 import 'package:flutter/material.dart';
 
 class AuthScreen extends StatefulWidget {
@@ -10,9 +14,101 @@ class AuthScreen extends StatefulWidget {
 class _AuthScreenState extends State<AuthScreen> {
   @override
   Widget build(BuildContext context) {
+    Config().init(context);
     return Scaffold(
-      body: Center(
-        child: Text('Auth Screen'),
+      resizeToAvoidBottomInset: false,
+      body: Padding(
+        padding: const EdgeInsets.symmetric(
+          horizontal: 15,
+          vertical: 15,
+        ),
+        child: SafeArea(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                AppText.enText['welcome_text']!,
+                style: const TextStyle(
+                  fontSize: 36,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Config.spaceSmall,
+              Text(
+                AppText.enText['signIn_text']!,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Config.spaceSmall,
+              const LoginForm(),
+              Config.spaceSmall,
+              Center(
+                child: TextButton(
+                  onPressed: () {},
+                  child: Text(
+                    AppText.enText['forget_password_text']!,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+              ),
+              const Spacer(),
+              Center(
+                child: Text(
+                  AppText.enText['social_login_text']!,
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.normal,
+                    color: Colors.grey.shade500,
+                  ),
+                ),
+              ),
+              Config.spaceSmall,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  SocialLoginButton(
+                    title: 'google',
+                    onPressed: () {},
+                  ),
+                  SocialLoginButton(
+                    title: 'facebook',
+                    onPressed: () {},
+                  ),
+                ],
+              ),
+              Config.spaceSmall,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    AppText.enText['signUp_text']!,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.normal,
+                      color: Colors.grey.shade500,
+                    ),
+                  ),
+                  const SizedBox(width: 5),
+                  const Text(
+                    'Sign Up',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
