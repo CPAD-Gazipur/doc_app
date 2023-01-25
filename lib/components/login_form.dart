@@ -26,7 +26,7 @@ class _LoginFormState extends State<LoginForm> {
             controller: _emailControler,
             keyboardType: TextInputType.emailAddress,
             cursorColor: Config.primaryColor,
-            decoration: const InputDecoration(
+            decoration: InputDecoration(
               hintText: 'example@gmail.com',
               labelText: 'Email',
               alignLabelWithHint: true,
@@ -57,7 +57,7 @@ class _LoginFormState extends State<LoginForm> {
                         Icons.visibility_off_outlined,
                         color: Colors.black38,
                       )
-                    : const Icon(
+                    : Icon(
                         Icons.visibility_outlined,
                         color: Config.primaryColor,
                       ),

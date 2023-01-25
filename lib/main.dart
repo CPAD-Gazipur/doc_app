@@ -1,5 +1,5 @@
-import 'package:doc_app/screens/auth_screen.dart';
-import 'package:doc_app/utils/config.dart';
+import 'package:doc_app/screens/screens.dart';
+import 'package:doc_app/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       navigatorKey: navigatorKey,
       title: 'DocApp',
       theme: ThemeData(
-        inputDecorationTheme: const InputDecorationTheme(
+        inputDecorationTheme: InputDecorationTheme(
           focusColor: Config.primaryColor,
           border: Config.outlinedBorder,
           focusedBorder: Config.focusBorder,

@@ -1,7 +1,5 @@
-import 'package:doc_app/components/login_form.dart';
-import 'package:doc_app/components/socail_login_button.dart';
-import 'package:doc_app/utils/config.dart';
-import 'package:doc_app/utils/text.dart';
+import 'package:doc_app/components/components.dart';
+import 'package:doc_app/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 class AuthScreen extends StatefulWidget {
@@ -96,12 +94,15 @@ class _AuthScreenState extends State<AuthScreen> {
                     ),
                   ),
                   const SizedBox(width: 5),
-                  const Text(
-                    'Sign Up',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
+                  InkWell(
+                    onTap: () {},
+                    child: const Text(
+                      'Sign Up',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
                     ),
                   ),
                 ],

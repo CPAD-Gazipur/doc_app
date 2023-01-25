@@ -5,7 +5,7 @@ class Config {
   static double? screenWidth;
   static double? screenHeight;
 
-  /// Screen height and width initialiazation
+  /// Screen height and width initialization
   void init(BuildContext context) {
     mediaQueryData = MediaQuery.of(context);
     screenWidth = mediaQueryData!.size.width;
@@ -30,10 +30,10 @@ class Config {
     borderRadius: BorderRadius.all(Radius.circular(8)),
   );
 
-  static const focusBorder = OutlineInputBorder(
-    borderRadius: BorderRadius.all(Radius.circular(8)),
+  static final focusBorder = OutlineInputBorder(
+    borderRadius: const BorderRadius.all(Radius.circular(8)),
     borderSide: BorderSide(
-      color: Colors.greenAccent,
+      color: Colors.green.shade300,
     ),
   );
 
@@ -44,5 +44,5 @@ class Config {
     ),
   );
 
-  static const primaryColor = Colors.greenAccent;
+  static final primaryColor = Colors.green.shade300;
 }
