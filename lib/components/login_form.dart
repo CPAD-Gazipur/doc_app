@@ -11,9 +11,9 @@ class LoginForm extends StatefulWidget {
 
 class _LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormState>();
-  final _emailControler = TextEditingController();
-  final _passwordControler = TextEditingController();
-  bool obsecurePassword = true;
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  bool obscurePassword = true;
 
   @override
   Widget build(BuildContext context) {
@@ -23,22 +23,22 @@ class _LoginFormState extends State<LoginForm> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           TextFormField(
-            controller: _emailControler,
+            controller: _emailController,
             keyboardType: TextInputType.emailAddress,
             cursorColor: Config.primaryColor,
             decoration: InputDecoration(
               hintText: 'example@gmail.com',
               labelText: 'Email',
               alignLabelWithHint: true,
-              prefixIcon: Icon(Icons.email_outlined),
+              prefixIcon: const Icon(Icons.email_outlined),
               prefixIconColor: Config.primaryColor,
             ),
           ),
           Config.spaceSmall,
           TextFormField(
-            controller: _passwordControler,
+            controller: _passwordController,
             keyboardType: TextInputType.visiblePassword,
-            obscureText: obsecurePassword,
+            obscureText: obscurePassword,
             cursorColor: Config.primaryColor,
             decoration: InputDecoration(
               hintText: '********',
@@ -49,10 +49,10 @@ class _LoginFormState extends State<LoginForm> {
               suffixIcon: IconButton(
                 onPressed: () {
                   setState(() {
-                    obsecurePassword = !obsecurePassword;
+                    obscurePassword = !obscurePassword;
                   });
                 },
-                icon: obsecurePassword
+                icon: obscurePassword
                     ? const Icon(
                         Icons.visibility_off_outlined,
                         color: Colors.black38,
@@ -68,7 +68,9 @@ class _LoginFormState extends State<LoginForm> {
           CustomButton(
             width: double.infinity,
             title: 'Sign In',
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pushNamed('/main');
+            },
           ),
         ],
       ),

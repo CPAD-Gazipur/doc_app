@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
           backgroundColor: Config.primaryColor,
           selectedItemColor: Colors.white,
           showSelectedLabels: true,
-          showUnselectedLabels: false,
+          showUnselectedLabels: true,
           unselectedItemColor: Colors.grey.shade700,
           elevation: 10,
           type: BottomNavigationBarType.fixed,
@@ -41,6 +41,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const AuthScreen(),
+        '/main': (context) => const HomeLayout(),
       },
     );
   }

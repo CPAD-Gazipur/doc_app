@@ -1,6 +1,7 @@
 import 'package:doc_app/screens/appointment_screen.dart';
 import 'package:doc_app/screens/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class HomeLayout extends StatefulWidget {
   const HomeLayout({Key? key}) : super(key: key);
@@ -25,6 +26,29 @@ class _HomeLayoutState extends State<HomeLayout> {
         children: const [
           HomeScreen(),
           AppointmentScreen(),
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: currentScreen,
+        onTap: (page) {
+          setState(() {
+            currentScreen = page;
+            _pageController.animateToPage(
+              page,
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.easeInOut,
+            );
+          });
+        },
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(FontAwesomeIcons.houseChimneyMedical),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(FontAwesomeIcons.solidCalendarCheck),
+            label: 'Appointment',
+          ),
         ],
       ),
     );
