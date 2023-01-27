@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       navigatorKey: navigatorKey,
       title: 'DocApp',
       theme: ThemeData(
-        inputDecorationTheme: InputDecorationTheme(
+        inputDecorationTheme: const InputDecorationTheme(
           focusColor: Config.primaryColor,
           border: Config.outlinedBorder,
           focusedBorder: Config.focusBorder,
@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
           backgroundColor: Config.primaryColor,
           selectedItemColor: Colors.white,
           showSelectedLabels: true,
-          showUnselectedLabels: true,
+          showUnselectedLabels: false,
           unselectedItemColor: Colors.grey.shade700,
           elevation: 10,
           type: BottomNavigationBarType.fixed,
