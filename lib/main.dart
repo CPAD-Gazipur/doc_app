@@ -2,6 +2,8 @@ import 'package:doc_app/screens/screens.dart';
 import 'package:doc_app/utils/utils.dart';
 import 'package:flutter/material.dart';
 
+import 'home_layout.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -42,6 +44,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const AuthScreen(),
         '/main': (context) => const HomeLayout(),
+        '/doctor-details': (context) => const DoctorDetailsScreen(),
       },
     );
   }

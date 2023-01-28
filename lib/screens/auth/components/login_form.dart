@@ -57,7 +57,7 @@ class _LoginFormState extends State<LoginForm> {
                         Icons.visibility_off_outlined,
                         color: Colors.black38,
                       )
-                    : Icon(
+                    : const Icon(
                         Icons.visibility_outlined,
                         color: Config.primaryColor,
                       ),

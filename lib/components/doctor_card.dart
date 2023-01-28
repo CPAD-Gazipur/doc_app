@@ -2,7 +2,8 @@ import 'package:doc_app/utils/config.dart';
 import 'package:flutter/material.dart';
 
 class DoctorCard extends StatefulWidget {
-  const DoctorCard({Key? key}) : super(key: key);
+  final String route;
+  const DoctorCard({Key? key, required this.route}) : super(key: key);
 
   @override
   State<DoctorCard> createState() => _DoctorCardState();
@@ -19,7 +20,9 @@ class _DoctorCardState extends State<DoctorCard> {
         vertical: 10,
       ),
       child: GestureDetector(
-        onTap: () {},
+        onTap: () {
+          Navigator.of(context).pushNamed(widget.route);
+        },
         child: Card(
           elevation: 5,
           shape: RoundedRectangleBorder(

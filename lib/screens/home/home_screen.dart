@@ -1,4 +1,5 @@
 import 'package:doc_app/components/components.dart';
+import 'package:doc_app/screens/screens.dart';
 import 'package:doc_app/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -146,7 +147,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 Column(
                   children: List.generate(
                     10,
-                    (index) => const DoctorCard(),
+                    (index) => const DoctorCard(
+                      route: '/doctor-details',
+                    ),
                   ),
                 )
               ],

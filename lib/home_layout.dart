@@ -1,5 +1,5 @@
-import 'package:doc_app/screens/appointment_screen.dart';
-import 'package:doc_app/screens/home_screen.dart';
+import 'package:doc_app/screens/appointment/appointment_screen.dart';
+import 'package:doc_app/screens/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
