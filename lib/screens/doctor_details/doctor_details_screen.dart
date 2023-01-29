@@ -1,3 +1,4 @@
+import 'package:doc_app/components/components.dart';
 import 'package:doc_app/components/custom_app_bar.dart';
 import 'package:doc_app/screens/screens.dart';
 import 'package:flutter/material.dart';
@@ -34,11 +35,26 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
         ],
       ),
       body: SafeArea(
-        child: Column(
-          children: const [
-            DoctorProfileInfoSection(),
-            DoctorProfileDetailsSection(),
-          ],
+        child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Column(
+            children: [
+              const DoctorProfileInfoSection(),
+              const DoctorProfileDetailsSection(),
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 20,
+                  right: 20,
+                  bottom: 20,
+                ),
+                child: CustomButton(
+                  onPressed: () {},
+                  width: double.infinity,
+                  title: 'Book Appointment',
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
