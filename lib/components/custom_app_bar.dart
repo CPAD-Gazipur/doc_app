@@ -30,6 +30,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
       automaticallyImplyLeading: true,
       backgroundColor: Colors.white,
       elevation: 0,
+      centerTitle: true,
       title: Text(
         widget.title,
         style: const TextStyle(

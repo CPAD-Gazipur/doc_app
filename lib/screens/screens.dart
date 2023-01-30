@@ -2,6 +2,7 @@ export 'appointment/appointment_screen.dart';
 export 'auth/auth_screen.dart';
 export 'auth/components/login_form.dart';
 export 'auth/components/social_login_button.dart';
+export 'booking/booking_screen.dart';
 export 'doctor_details/components/doctor_about_info_card_section.dart';
 export 'doctor_details/components/doctor_profile_details_section.dart';
 export 'doctor_details/components/doctor_profile_info_section.dart';

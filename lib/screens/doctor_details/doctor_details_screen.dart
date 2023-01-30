@@ -48,7 +48,9 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
                   bottom: 20,
                 ),
                 child: CustomButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/booking-screen');
+                  },
                   width: double.infinity,
                   title: 'Book Appointment',
                 ),
