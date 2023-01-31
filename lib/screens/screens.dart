@@ -9,3 +9,4 @@ export 'doctor_details/components/doctor_profile_info_section.dart';
 export 'doctor_details/doctor_details_screen.dart';
 export 'home/components/appointment_card.dart';
 export 'home/home_screen.dart';
+export 'success/booking_success_screen.dart';

@@ -56,16 +56,19 @@ class _BookingScreenState extends State<BookingScreen> {
               ? SliverToBoxAdapter(
                   child: Container(
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 10,
+                      horizontal: 16,
                       vertical: 30,
                     ),
                     alignment: Alignment.center,
-                    child: const Text(
-                      'Weekend is not available, please select another date',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                        color: Colors.grey,
+                    child: const Center(
+                      child: Text(
+                        'Weekend is not available, please select another date.',
+                        softWrap: true,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                          color: Colors.grey,
+                        ),
                       ),
                     ),
                   ),
@@ -95,6 +98,7 @@ class _BookingScreenState extends State<BookingScreen> {
                                 : null,
                           ),
                           alignment: Alignment.center,
+                          clipBehavior: Clip.antiAlias,
                           child: Text(
                             '${index + 9 > 12 ? ((index + 9) - 12) : index + 9}:00 ${index + 9 > 11 ? 'PM' : 'AM'}',
                             style: TextStyle(
@@ -115,13 +119,15 @@ class _BookingScreenState extends State<BookingScreen> {
           SliverToBoxAdapter(
             child: Container(
               padding: const EdgeInsets.symmetric(
-                horizontal: 10,
+                horizontal: 12,
                 vertical: 30,
               ),
               child: CustomButton(
                 title: 'Make Appointment',
                 width: double.infinity,
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).pushNamed('/success-screen');
+                },
                 disable: _timeSelected && _dateSelected ? false : true,
               ),
             ),
@@ -132,42 +138,47 @@ class _BookingScreenState extends State<BookingScreen> {
   }
 
   Widget tableCalendar() {
-    return TableCalendar(
-      focusedDay: _focusedDay,
-      firstDay: DateTime.now(),
-      lastDay: DateTime(2023, 12, 31),
-      calendarFormat: _calendarFormat,
-      currentDay: _currentDay,
-      rowHeight: 48,
-      calendarStyle: const CalendarStyle(
-        todayDecoration: BoxDecoration(
-          color: Config.primaryColor,
-          shape: BoxShape.circle,
-        ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 5,
       ),
-      availableCalendarFormats: const {
-        CalendarFormat.month: 'Month',
-      },
-      onFormatChanged: (format) {
-        setState(() {
-          _calendarFormat = format;
-        });
-      },
-      onDaySelected: ((selectedDay, focusDay) {
-        setState(() {
-          _currentDay = selectedDay;
-          _focusedDay = focusDay;
-          _dateSelected = true;
+      child: TableCalendar(
+        focusedDay: _focusedDay,
+        firstDay: DateTime.now(),
+        lastDay: DateTime(2023, 12, 31),
+        calendarFormat: _calendarFormat,
+        currentDay: _currentDay,
+        rowHeight: 48,
+        calendarStyle: const CalendarStyle(
+          todayDecoration: BoxDecoration(
+            color: Config.primaryColor,
+            shape: BoxShape.circle,
+          ),
+        ),
+        availableCalendarFormats: const {
+          CalendarFormat.month: 'Month',
+        },
+        onFormatChanged: (format) {
+          setState(() {
+            _calendarFormat = format;
+          });
+        },
+        onDaySelected: ((selectedDay, focusDay) {
+          setState(() {
+            _currentDay = selectedDay;
+            _focusedDay = focusDay;
+            _dateSelected = true;
 
-          if (selectedDay.weekday == 6 || selectedDay.weekday == 7) {
-            _isWeekend = true;
-            _timeSelected = false;
-            _currentIndex = null;
-          } else {
-            _isWeekend = false;
-          }
-        });
-      }),
+            if (selectedDay.weekday == 6 || selectedDay.weekday == 7) {
+              _isWeekend = true;
+              _timeSelected = false;
+              _currentIndex = null;
+            } else {
+              _isWeekend = false;
+            }
+          });
+        }),
+      ),
     );
   }
 }
