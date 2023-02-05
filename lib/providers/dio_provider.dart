@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DioProvider {
@@ -22,15 +23,21 @@ class DioProvider {
             },
           ));
 
-      if (response.statusCode == 200 && response.data != '') {
-        final prefs = await SharedPreferences.getInstance();
-        prefs.setString('token', response.data);
-        return true;
+      if (response.statusCode == 200) {
+        if (response.data['success']) {
+          final prefs = await SharedPreferences.getInstance();
+          prefs.setString('token', response.data['message']);
+          return true;
+        } else {
+          debugPrint('ERROR: ${response.data['message']}');
+          return false;
+        }
       } else {
         return false;
       }
     } catch (error) {
-      return error;
+      debugPrint('LOGIN ERROR: $error');
+      return false;
     }
   }
 
