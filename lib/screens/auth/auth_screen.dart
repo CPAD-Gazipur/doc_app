@@ -1,4 +1,4 @@
-import 'package:doc_app/components/components.dart';
+import 'package:doc_app/screens/auth/components/signup_form.dart';
 import 'package:doc_app/screens/screens.dart';
 import 'package:doc_app/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +11,8 @@ class AuthScreen extends StatefulWidget {
 }
 
 class _AuthScreenState extends State<AuthScreen> {
+  bool isSignIn = true;
+
   @override
   Widget build(BuildContext context) {
     Config().init(context);
@@ -35,28 +37,32 @@ class _AuthScreenState extends State<AuthScreen> {
               ),
               Config.spaceSmall,
               Text(
-                AppText.enText['signIn_text']!,
+                isSignIn
+                    ? AppText.enText['signIn_text']!
+                    : AppText.enText['register_text']!,
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
               ),
               Config.spaceSmall,
-              const LoginForm(),
+              isSignIn ? const LoginForm() : const SignupForm(),
               Config.spaceSmall,
-              Center(
-                child: TextButton(
-                  onPressed: () {},
-                  child: Text(
-                    AppText.enText['forget_password_text']!,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black,
-                    ),
-                  ),
-                ),
-              ),
+              isSignIn
+                  ? Center(
+                      child: TextButton(
+                        onPressed: () {},
+                        child: Text(
+                          AppText.enText['forget_password_text']!,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    )
+                  : Container(),
               const Spacer(),
               Center(
                 child: Text(
@@ -87,7 +93,9 @@ class _AuthScreenState extends State<AuthScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    AppText.enText['signUp_text']!,
+                    isSignIn
+                        ? AppText.enText['signUp_text']!
+                        : AppText.enText['registered_text']!,
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.normal,
@@ -96,10 +104,14 @@ class _AuthScreenState extends State<AuthScreen> {
                   ),
                   const SizedBox(width: 5),
                   InkWell(
-                    onTap: () {},
-                    child: const Text(
-                      'Sign Up',
-                      style: TextStyle(
+                    onTap: () {
+                      setState(() {
+                        isSignIn = !isSignIn;
+                      });
+                    },
+                    child: Text(
+                      isSignIn ? 'Sign Up' : 'Sign In',
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: Colors.black,

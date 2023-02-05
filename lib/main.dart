@@ -1,6 +1,8 @@
+import 'package:doc_app/models/auth_model.dart';
 import 'package:doc_app/screens/screens.dart';
 import 'package:doc_app/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'home_layout.dart';
 
@@ -15,39 +17,42 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      navigatorKey: navigatorKey,
-      title: 'DocApp',
-      theme: ThemeData(
-        inputDecorationTheme: const InputDecorationTheme(
-          focusColor: Config.primaryColor,
-          border: Config.outlinedBorder,
-          focusedBorder: Config.focusBorder,
-          errorBorder: Config.errorBorder,
-          enabledBorder: Config.outlinedBorder,
-          floatingLabelStyle: TextStyle(color: Config.primaryColor),
-          prefixIconColor: Colors.black38,
+    return ChangeNotifierProvider<AuthModel>(
+      create: (context) => AuthModel(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        navigatorKey: navigatorKey,
+        title: 'DocApp',
+        theme: ThemeData(
+          inputDecorationTheme: const InputDecorationTheme(
+            focusColor: Config.primaryColor,
+            border: Config.outlinedBorder,
+            focusedBorder: Config.focusBorder,
+            errorBorder: Config.errorBorder,
+            enabledBorder: Config.outlinedBorder,
+            floatingLabelStyle: TextStyle(color: Config.primaryColor),
+            prefixIconColor: Colors.black38,
+          ),
+          scaffoldBackgroundColor: Colors.white,
+          bottomNavigationBarTheme: BottomNavigationBarThemeData(
+            backgroundColor: Config.primaryColor,
+            selectedItemColor: Colors.white,
+            showSelectedLabels: true,
+            showUnselectedLabels: false,
+            unselectedItemColor: Colors.grey.shade700,
+            elevation: 10,
+            type: BottomNavigationBarType.fixed,
+          ),
         ),
-        scaffoldBackgroundColor: Colors.white,
-        bottomNavigationBarTheme: BottomNavigationBarThemeData(
-          backgroundColor: Config.primaryColor,
-          selectedItemColor: Colors.white,
-          showSelectedLabels: true,
-          showUnselectedLabels: false,
-          unselectedItemColor: Colors.grey.shade700,
-          elevation: 10,
-          type: BottomNavigationBarType.fixed,
-        ),
+        initialRoute: '/',
+        routes: {
+          '/': (context) => const AuthScreen(),
+          '/main': (context) => const HomeLayout(),
+          '/doctor-details': (context) => const DoctorDetailsScreen(),
+          '/booking-screen': (context) => const BookingScreen(),
+          '/success-screen': (context) => const BookingSuccessScreen(),
+        },
       ),
-      initialRoute: '/',
-      routes: {
-        '/': (context) => const AuthScreen(),
-        '/main': (context) => const HomeLayout(),
-        '/doctor-details': (context) => const DoctorDetailsScreen(),
-        '/booking-screen': (context) => const BookingScreen(),
-        '/success-screen': (context) => const BookingSuccessScreen(),
-      },
     );
   }
 }

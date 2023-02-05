@@ -1,20 +1,21 @@
-import 'package:doc_app/components/custom_button.dart';
+import 'package:doc_app/components/components.dart';
 import 'package:doc_app/main.dart';
-import 'package:doc_app/models/auth_model.dart';
-import 'package:doc_app/providers/providers.dart';
-import 'package:doc_app/utils/config.dart';
+import 'package:doc_app/models/models.dart';
+import 'package:doc_app/providers/dio_provider.dart';
+import 'package:doc_app/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class LoginForm extends StatefulWidget {
-  const LoginForm({Key? key}) : super(key: key);
+class SignupForm extends StatefulWidget {
+  const SignupForm({Key? key}) : super(key: key);
 
   @override
-  State<LoginForm> createState() => _LoginFormState();
+  State<SignupForm> createState() => _SignupFormState();
 }
 
-class _LoginFormState extends State<LoginForm> {
+class _SignupFormState extends State<SignupForm> {
   final _formKey = GlobalKey<FormState>();
+  final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool obscurePassword = true;
@@ -26,6 +27,19 @@ class _LoginFormState extends State<LoginForm> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
+          TextFormField(
+            controller: _nameController,
+            keyboardType: TextInputType.name,
+            cursorColor: Config.primaryColor,
+            decoration: const InputDecoration(
+              hintText: 'Md. Al-Amin',
+              labelText: 'Name',
+              alignLabelWithHint: true,
+              prefixIcon: Icon(Icons.account_circle_outlined),
+              prefixIconColor: Config.primaryColor,
+            ),
+          ),
+          Config.spaceSmall,
           TextFormField(
             controller: _emailController,
             keyboardType: TextInputType.emailAddress,
@@ -73,20 +87,31 @@ class _LoginFormState extends State<LoginForm> {
             builder: (context, auth, child) {
               return CustomButton(
                 width: double.infinity,
-                title: 'Sign In',
+                title: 'Sign Up',
                 onPressed: () async {
-                  if (_emailController.text.isNotEmpty &&
+                  // Navigator.of(context).pushNamed('/main');
+
+                  if (_nameController.text.isNotEmpty &&
+                      _emailController.text.isNotEmpty &&
                       _passwordController.text.isNotEmpty) {
-                    final token = await DioProvider().getToken(
+                    final register = await DioProvider().registerUser(
+                      name: _nameController.text,
                       email: _emailController.text,
                       password: _passwordController.text,
                     );
-                    if (token) {
-                      auth.loginSuccess();
-                      MyApp.navigatorKey.currentState!.pushNamed('/main');
+                    if (register) {
+                      final token = await DioProvider().getToken(
+                        email: _emailController.text,
+                        password: _passwordController.text,
+                      );
+                      if (token) {
+                        auth.loginSuccess();
+                        MyApp.navigatorKey.currentState!.pushNamed('/main');
+                      }
+                    } else {
+                      debugPrint('Registration is not successfully');
                     }
                   }
-                  // Navigator.of(context).pushNamed('/main');
                 },
               );
             },

@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:doc_app/components/components.dart';
+import 'package:doc_app/providers/dio_provider.dart';
 import 'package:doc_app/screens/screens.dart';
 import 'package:doc_app/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -12,6 +16,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  Map<String, dynamic> user = {};
+
   List<Map<String, dynamic>> medicalCategories = [
     {
       'icon': FontAwesomeIcons.userDoctor,
@@ -39,6 +45,27 @@ class _HomeScreenState extends State<HomeScreen> {
     },
   ];
 
+  Future<void> getUserData() async {
+    final prefs = await SharedPreferences.getInstance();
+    final token = prefs.getString('token') ?? '';
+
+    if (token.isNotEmpty && token != '') {
+      final response = await DioProvider().getUser(token: token);
+      if (response != null) {
+        setState(() {
+          user = json.decode(response);
+          debugPrint('USER: $user');
+        });
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    getUserData();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     Config().init(context);
@@ -58,15 +85,15 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
+                  children: [
                     Text(
-                      'Amanda',
-                      style: TextStyle(
+                      user['name'] ?? '',
+                      style: const TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       child: CircleAvatar(
                         radius: 30,
                         backgroundImage:
