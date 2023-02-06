@@ -81,13 +81,18 @@ class DioProvider {
             },
           ));
 
-      if (response.statusCode == 201 && response.data != '') {
-        return true;
+      if (response.statusCode == 200 && response.data != '') {
+        if (response.data['success']) {
+          return true;
+        } else {
+          return false;
+        }
       } else {
         return false;
       }
     } catch (error) {
-      return error;
+      debugPrint('Registration Error: $error');
+      return false;
     }
   }
 }
