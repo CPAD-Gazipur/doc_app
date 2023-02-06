@@ -57,7 +57,8 @@ class DioProvider {
         return json.encode(userResponse.data);
       }
     } catch (error) {
-      return error;
+      debugPrint('Error: $error');
+      return null;
     }
   }
 

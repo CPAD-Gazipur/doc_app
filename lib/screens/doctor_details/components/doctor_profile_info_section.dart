@@ -2,7 +2,10 @@ import 'package:doc_app/utils/config.dart';
 import 'package:flutter/material.dart';
 
 class DoctorProfileInfoSection extends StatelessWidget {
-  const DoctorProfileInfoSection({Key? key}) : super(key: key);
+  final Map doctor;
+
+  const DoctorProfileInfoSection({Key? key, required this.doctor})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -11,18 +14,23 @@ class DoctorProfileInfoSection extends StatelessWidget {
       width: double.infinity,
       child: Column(
         children: [
-          const CircleAvatar(
+          CircleAvatar(
             radius: 65,
-            backgroundImage: AssetImage('assets/images/doctor_2.png'),
+            backgroundImage: NetworkImage(
+                'http://127.0.0.1:8000${doctor['doctor_profile']}'),
             backgroundColor: Colors.white,
           ),
           Config.spaceMedium,
-          const Text(
-            'Dr Richard Tan',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 24,
-              color: Colors.black,
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Text(
+              doctor['doctor_name'] ?? '',
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 24,
+                color: Colors.black,
+              ),
             ),
           ),
           Config.spaceSmall,

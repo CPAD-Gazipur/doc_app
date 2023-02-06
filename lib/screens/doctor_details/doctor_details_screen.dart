@@ -1,5 +1,4 @@
 import 'package:doc_app/components/components.dart';
-import 'package:doc_app/components/custom_app_bar.dart';
 import 'package:doc_app/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -16,6 +15,7 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final doctor = ModalRoute.of(context)!.settings.arguments as Map;
     return Scaffold(
       appBar: CustomAppBar(
         title: 'Doctor Details',
@@ -39,8 +39,12 @@ class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
           physics: const BouncingScrollPhysics(),
           child: Column(
             children: [
-              const DoctorProfileInfoSection(),
-              const DoctorProfileDetailsSection(),
+              DoctorProfileInfoSection(
+                doctor: doctor,
+              ),
+              DoctorProfileDetailsSection(
+                doctor: doctor,
+              ),
               Padding(
                 padding: const EdgeInsets.only(
                   left: 20,

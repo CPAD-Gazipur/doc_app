@@ -2,25 +2,32 @@ import 'package:doc_app/components/info_card.dart';
 import 'package:flutter/material.dart';
 
 class DoctorAboutInfoCardSection extends StatelessWidget {
-  const DoctorAboutInfoCardSection({Key? key}) : super(key: key);
+  final Map doctor;
+
+  const DoctorAboutInfoCardSection({
+    Key? key,
+    required this.doctor,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      children: const [
+      children: [
         InfoCard(
           label: 'Patients',
-          value: '109',
+          value: doctor['patients'] ?? '00',
         ),
-        SizedBox(width: 15),
+        const SizedBox(width: 15),
         InfoCard(
           label: 'Experience',
-          value: '10 Years',
+          value: doctor['experience'] == 1
+              ? '${doctor['experience']} Year'
+              : '${doctor['experience']} Years',
         ),
-        SizedBox(width: 15),
+        const SizedBox(width: 15),
         InfoCard(
           label: 'Rating',
-          value: '4.5',
+          value: doctor['rating'] ?? '5.0',
         ),
       ],
     );

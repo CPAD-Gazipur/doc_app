@@ -1,15 +1,16 @@
 import 'package:doc_app/utils/config.dart';
 import 'package:flutter/material.dart';
 
-class DoctorCard extends StatefulWidget {
+class DoctorCard extends StatelessWidget {
+  final Map<String, dynamic> doctor;
   final String route;
-  const DoctorCard({Key? key, required this.route}) : super(key: key);
 
-  @override
-  State<DoctorCard> createState() => _DoctorCardState();
-}
+  const DoctorCard({
+    Key? key,
+    required this.route,
+    required this.doctor,
+  }) : super(key: key);
 
-class _DoctorCardState extends State<DoctorCard> {
   @override
   Widget build(BuildContext context) {
     Config().init(context);
@@ -21,7 +22,7 @@ class _DoctorCardState extends State<DoctorCard> {
       ),
       child: GestureDetector(
         onTap: () {
-          Navigator.of(context).pushNamed(widget.route);
+          Navigator.of(context).pushNamed(route, arguments: doctor);
         },
         child: Card(
           elevation: 5,
@@ -34,8 +35,8 @@ class _DoctorCardState extends State<DoctorCard> {
             children: [
               SizedBox(
                 width: Config.widthSize * 0.25,
-                child: Image.asset(
-                  'assets/images/doctor_2.png',
+                child: Image.network(
+                  'http://127.0.0.1:8000${doctor['doctor_profile']}',
                   fit: BoxFit.fill,
                 ),
               ),
@@ -48,16 +49,16 @@ class _DoctorCardState extends State<DoctorCard> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        'Dr Richard Tan',
-                        style: TextStyle(
+                      Text(
+                        doctor['doctor_name'] ?? '',
+                        style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const Text(
-                        'Dental',
-                        style: TextStyle(
+                      Text(
+                        doctor['category'] ?? '',
+                        style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.normal,
                         ),

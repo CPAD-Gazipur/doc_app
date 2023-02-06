@@ -3,7 +3,12 @@ import 'package:doc_app/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 class DoctorProfileDetailsSection extends StatelessWidget {
-  const DoctorProfileDetailsSection({Key? key}) : super(key: key);
+  final Map doctor;
+
+  const DoctorProfileDetailsSection({
+    Key? key,
+    required this.doctor,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +19,9 @@ class DoctorProfileDetailsSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const DoctorAboutInfoCardSection(),
+          DoctorAboutInfoCardSection(
+            doctor: doctor,
+          ),
           Config.spaceMedium,
           const Text(
             'About Doctor',
@@ -24,11 +31,9 @@ class DoctorProfileDetailsSection extends StatelessWidget {
             ),
           ),
           Config.spaceSmall,
-          const Text(
-            'Dr. Richard Tan is an emergency medicine physician in New York, '
-            'New York. He received his medical degree from University of '
-            'Vermont College of Medicine.',
-            style: TextStyle(
+          Text(
+            doctor['bio_data'] ?? '',
+            style: const TextStyle(
               height: 1.5,
               fontWeight: FontWeight.w500,
             ),
