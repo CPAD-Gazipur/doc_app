@@ -15,19 +15,23 @@ class DoctorAboutInfoCardSection extends StatelessWidget {
       children: [
         InfoCard(
           label: 'Patients',
-          value: doctor['patients'] ?? '00',
+          value: doctor['patients'] != null
+              ? doctor['patients'].toString()
+              : 'N/A',
         ),
         const SizedBox(width: 15),
         InfoCard(
           label: 'Experience',
-          value: doctor['experience'] == 1
-              ? '${doctor['experience']} Year'
-              : '${doctor['experience']} Years',
+          value: doctor['experience'] != null
+              ? doctor['experience'] == 1
+                  ? '${doctor['experience']} Year'
+                  : '${doctor['experience']} Years'
+              : 'N/A',
         ),
         const SizedBox(width: 15),
         InfoCard(
           label: 'Rating',
-          value: doctor['rating'] ?? '5.0',
+          value: doctor['rating'] != null ? doctor['rating'].toString() : 'N/A',
         ),
       ],
     );
