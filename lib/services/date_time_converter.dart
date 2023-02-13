@@ -2,7 +2,7 @@ import 'package:intl/intl.dart';
 
 class DateTimeConverter {
   static String getDate({required DateTime dateTime}) {
-    return DateFormat.yMd().format(dateTime);
+    return DateFormat.yMMMMd().format(dateTime);
   }
 
   static String getDay({required int day}) {

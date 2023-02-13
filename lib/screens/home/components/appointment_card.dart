@@ -3,7 +3,14 @@ import 'package:doc_app/utils/config.dart';
 import 'package:flutter/material.dart';
 
 class AppointmentCard extends StatefulWidget {
-  const AppointmentCard({Key? key}) : super(key: key);
+  final Map<String, dynamic> doctor;
+  final Color color;
+
+  const AppointmentCard({
+    Key? key,
+    required this.doctor,
+    required this.color,
+  }) : super(key: key);
 
   @override
   State<AppointmentCard> createState() => _AppointmentCardState();
@@ -15,7 +22,7 @@ class _AppointmentCardState extends State<AppointmentCard> {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Config.primaryColor,
+        color: widget.color,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Material(
@@ -26,24 +33,26 @@ class _AppointmentCardState extends State<AppointmentCard> {
             children: [
               Row(
                 children: [
-                  const CircleAvatar(
-                    backgroundImage: AssetImage('assets/images/doctor_1.png'),
+                  CircleAvatar(
+                    backgroundImage: NetworkImage(
+                      'http://127.0.0.1:8000${widget.doctor['doctor_profile']}',
+                    ),
                   ),
                   const SizedBox(width: 10),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       Text(
-                        'Dr Richard Tan',
-                        style: TextStyle(
+                        widget.doctor['doctor_name'],
+                        style: const TextStyle(
                           color: Colors.white,
                         ),
                       ),
-                      SizedBox(height: 2),
+                      const SizedBox(height: 2),
                       Text(
-                        'Dental',
-                        style: TextStyle(
+                        widget.doctor['category'],
+                        style: const TextStyle(
                           color: Colors.black,
                         ),
                       ),
@@ -52,7 +61,11 @@ class _AppointmentCardState extends State<AppointmentCard> {
                 ],
               ),
               Config.spaceSmall,
-              const ScheduleCard(),
+              ScheduleCard(
+                date: widget.doctor['appointments']['date'],
+                day: widget.doctor['appointments']['day'],
+                time: widget.doctor['appointments']['time'],
+              ),
               Config.spaceSmall,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

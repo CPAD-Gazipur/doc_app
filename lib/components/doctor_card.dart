@@ -43,7 +43,7 @@ class DoctorCard extends StatelessWidget {
               Flexible(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
-                    vertical: 20,
+                    vertical: 12,
                     horizontal: 16,
                   ),
                   child: Column(
@@ -51,13 +51,18 @@ class DoctorCard extends StatelessWidget {
                     children: [
                       Text(
                         doctor['doctor_name'] ?? '',
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
+                      const SizedBox(height: 5),
                       Text(
                         doctor['category'] ?? '',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.normal,

@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:doc_app/services/services.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class DioProvider {
   /// GET TOKEN USING GMAIL & PASSWORD
@@ -25,8 +25,9 @@ class DioProvider {
 
       if (response.statusCode == 200) {
         if (response.data['success']) {
-          final prefs = await SharedPreferences.getInstance();
-          prefs.setString('token', response.data['message']);
+          await SharedPreferencesService.saveToken(
+            token: response.data['message'],
+          );
           return true;
         } else {
           debugPrint('ERROR: ${response.data['message']}');
@@ -134,6 +135,28 @@ class DioProvider {
     } catch (error) {
       debugPrint('Appointment Booing Error: $error');
       return false;
+    }
+  }
+
+  /// GET USER APPOINTMENTS
+  Future<dynamic> getAppointments({required String token}) async {
+    try {
+      var appointmentsResponse = await Dio().get(
+        'http://127.0.0.1:8000/api/appointments',
+        options: Options(headers: {
+          'Authorization': 'Bearer $token',
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }),
+      );
+
+      if (appointmentsResponse.statusCode == 200 &&
+          appointmentsResponse.data != '') {
+        return json.encode(appointmentsResponse.data);
+      }
+    } catch (error) {
+      debugPrint('AppointmentsError: $error');
+      return null;
     }
   }
 }

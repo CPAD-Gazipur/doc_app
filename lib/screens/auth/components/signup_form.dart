@@ -106,7 +106,11 @@ class _SignupFormState extends State<SignupForm> {
                       );
                       if (token) {
                         auth.loginSuccess();
-                        MyApp.navigatorKey.currentState!.pushNamed('/main');
+                        MyApp.navigatorKey.currentState!
+                            .pushNamedAndRemoveUntil(
+                          '/main',
+                          (Route<dynamic> route) => false,
+                        );
                       }
                     } else {
                       debugPrint('Registration is not successfully');

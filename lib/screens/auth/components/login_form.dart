@@ -83,7 +83,10 @@ class _LoginFormState extends State<LoginForm> {
                     );
                     if (token) {
                       auth.loginSuccess();
-                      MyApp.navigatorKey.currentState!.pushNamed('/main');
+                      MyApp.navigatorKey.currentState!.pushNamedAndRemoveUntil(
+                        '/main',
+                        (Route<dynamic> route) => false,
+                      );
                     }
                   }
                   // Navigator.of(context).pushNamed('/main');

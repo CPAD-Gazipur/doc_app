@@ -3,10 +3,18 @@ import 'package:flutter/material.dart';
 class ScheduleCard extends StatelessWidget {
   final Color backgroundColor;
   final Color textColor;
+
+  final String date;
+  final String day;
+  final String time;
+
   const ScheduleCard({
     Key? key,
     this.backgroundColor = Colors.grey,
     this.textColor = Colors.white,
+    required this.date,
+    required this.day,
+    required this.time,
   }) : super(key: key);
 
   @override
@@ -32,7 +40,7 @@ class ScheduleCard extends StatelessWidget {
               ),
               const SizedBox(width: 5),
               Text(
-                'Monday - January 27, 2023',
+                '$day - $date',
                 style: TextStyle(
                   color: textColor,
                 ),
@@ -51,7 +59,7 @@ class ScheduleCard extends StatelessWidget {
               const SizedBox(width: 5),
               Flexible(
                 child: Text(
-                  '02:00 PM',
+                  time,
                   style: TextStyle(
                     color: textColor,
                   ),

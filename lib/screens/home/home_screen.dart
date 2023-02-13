@@ -3,10 +3,10 @@ import 'dart:convert';
 import 'package:doc_app/components/components.dart';
 import 'package:doc_app/providers/providers.dart';
 import 'package:doc_app/screens/screens.dart';
+import 'package:doc_app/services/services.dart';
 import 'package:doc_app/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -17,6 +17,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   Map<String, dynamic> user = {};
+  Map<String, dynamic> doctor = {};
 
   List<Map<String, dynamic>> medicalCategories = [
     {
@@ -46,8 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
   Future<void> getUserData() async {
-    final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString('token') ?? '';
+    final token = await SharedPreferencesService.getToken() ?? '';
 
     if (token.isNotEmpty && token != '') {
       final response = await DioProvider().getUser(token: token);
@@ -55,6 +55,13 @@ class _HomeScreenState extends State<HomeScreen> {
         setState(() {
           user = json.decode(response);
           debugPrint('USER: $user');
+
+          /// GET DOCTOR FULL INFO OF TODAY'S APPOINTMENTS
+          for (var doctorData in user['doctors']) {
+            if (doctorData['appointments'] != null) {
+              doctor = doctorData;
+            }
+          }
         });
       }
     }
@@ -166,7 +173,25 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                       Config.spaceSmall,
-                      const AppointmentCard(),
+                      doctor.isNotEmpty
+                          ? AppointmentCard(
+                              doctor: doctor,
+                              color: Config.primaryColor,
+                            )
+                          : Container(
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: Colors.grey.shade300,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: const Center(
+                                child: Padding(
+                                  padding: EdgeInsets.all(20),
+                                  child: Text('No Appointment Today',style: TextStyle(fontSize: 16,
+                                  fontWeight: FontWeight.w600,),),
+                                ),
+                              ),
+                            ),
                       Config.spaceSmall,
                       const Text(
                         'Top Doctors',

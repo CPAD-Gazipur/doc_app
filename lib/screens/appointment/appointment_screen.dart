@@ -1,4 +1,8 @@
+import 'dart:convert';
+
 import 'package:doc_app/components/components.dart';
+import 'package:doc_app/providers/dio_provider.dart';
+import 'package:doc_app/services/services.dart';
 import 'package:doc_app/utils/enum.dart';
 import 'package:doc_app/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -15,55 +19,33 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
 
   Alignment _alignment = Alignment.centerLeft;
 
-  List<dynamic> schedules = [
-    {
-      'doctor_name': 'Dr Richard Tan',
-      'doctor_profile': 'assets/images/doctor_1.png',
-      'category': 'Dental',
-      'status': FilterStatus.upcoming,
-    },
-    {
-      'doctor_name': 'Dr Max Lim',
-      'doctor_profile': 'assets/images/doctor_2.png',
-      'category': 'Cardiology',
-      'status': FilterStatus.complete,
-    },
-    {
-      'doctor_name': 'Dr Jane Wong',
-      'doctor_profile': 'assets/images/doctor_3.png',
-      'category': 'Respirations',
-      'status': FilterStatus.complete,
-    },
-    {
-      'doctor_name': 'Dr Janny Song',
-      'doctor_profile': 'assets/images/doctor_4.png',
-      'category': 'Dermatology',
-      'status': FilterStatus.upcoming,
-    },
-    {
-      'doctor_name': 'Dr Richard Tan',
-      'doctor_profile': 'assets/images/doctor_5.png',
-      'category': 'Gynecology',
-      'status': FilterStatus.cancel,
-    },
-    {
-      'doctor_name': 'Dr Max Lim',
-      'doctor_profile': 'assets/images/doctor_2.png',
-      'category': 'Cardiology',
-      'status': FilterStatus.complete,
-    },
-    {
-      'doctor_name': 'Dr Janny Song',
-      'doctor_profile': 'assets/images/doctor_4.png',
-      'category': 'Dermatology',
-      'status': FilterStatus.cancel,
-    },
-  ];
+  List<dynamic> schedules = [];
+
+  Future<void> getAppointments() async {
+    final token = await SharedPreferencesService.getToken() ?? '';
+
+    if (token != '') {
+      final appointments = await DioProvider().getAppointments(token: token);
+
+      if (appointments != 'Error') {
+        setState(() {
+          schedules = json.decode(appointments);
+          debugPrint('Appointments: $schedules');
+        });
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    getAppointments();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     List<dynamic> filteredSchedules = schedules.where((var schedule) {
-      /*switch (schedule['status']) {
+      switch (schedule['status']) {
         case 'upcoming':
           schedule['status'] = FilterStatus.upcoming;
           break;
@@ -73,7 +55,7 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
         case 'cancel':
           schedule['status'] = FilterStatus.cancel;
           break;
-      }*/
+      }
       return schedule['status'] == status;
     }).toList();
 
@@ -209,8 +191,8 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                           Row(
                             children: [
                               CircleAvatar(
-                                backgroundImage: AssetImage(
-                                  schedule['doctor_profile'],
+                                backgroundImage: NetworkImage(
+                                  'http://127.0.0.1:8000${schedule['doctor_profile']}',
                                 ),
                                 backgroundColor: Colors.white,
                               ),
@@ -244,6 +226,9 @@ class _AppointmentScreenState extends State<AppointmentScreen> {
                           ScheduleCard(
                             backgroundColor: Colors.grey.shade200,
                             textColor: Config.primaryColor,
+                            date: schedule['date'],
+                            day: schedule['day'],
+                            time: schedule['time'],
                           ),
                           const SizedBox(height: 15),
 
