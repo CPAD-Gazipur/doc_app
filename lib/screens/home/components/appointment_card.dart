@@ -1,6 +1,10 @@
 import 'package:doc_app/components/components.dart';
+import 'package:doc_app/main.dart';
+import 'package:doc_app/providers/dio_provider.dart';
+import 'package:doc_app/services/services.dart';
 import 'package:doc_app/utils/config.dart';
 import 'package:flutter/material.dart';
+import 'package:rating_dialog/rating_dialog.dart';
 
 class AppointmentCard extends StatefulWidget {
   final Map<String, dynamic> doctor;
@@ -35,7 +39,7 @@ class _AppointmentCardState extends State<AppointmentCard> {
                 children: [
                   CircleAvatar(
                     backgroundImage: NetworkImage(
-                      'http://127.0.0.1:8000${widget.doctor['doctor_profile']}',
+                      'http://127.0.0.1:8000${widget.doctor['doctor_profile'].toString()}',
                     ),
                   ),
                   const SizedBox(width: 10),
@@ -44,14 +48,14 @@ class _AppointmentCardState extends State<AppointmentCard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        widget.doctor['doctor_name'],
+                        widget.doctor['doctor_name'].toString(),
                         style: const TextStyle(
                           color: Colors.white,
                         ),
                       ),
                       const SizedBox(height: 2),
                       Text(
-                        widget.doctor['category'],
+                        widget.doctor['category'].toString(),
                         style: const TextStyle(
                           color: Colors.black,
                         ),
@@ -62,9 +66,9 @@ class _AppointmentCardState extends State<AppointmentCard> {
               ),
               Config.spaceSmall,
               ScheduleCard(
-                date: widget.doctor['appointments']['date'],
-                day: widget.doctor['appointments']['day'],
-                time: widget.doctor['appointments']['time'],
+                date: widget.doctor['appointments']['date'].toString(),
+                day: widget.doctor['appointments']['day'].toString(),
+                time: widget.doctor['appointments']['time'].toString(),
               ),
               Config.spaceSmall,
               Row(
@@ -75,7 +79,7 @@ class _AppointmentCardState extends State<AppointmentCard> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.red,
                       ),
-                      onPressed: () {},
+                      onPressed: () async {},
                       child: const Text(
                         'Cancel',
                         style: TextStyle(
@@ -90,7 +94,60 @@ class _AppointmentCardState extends State<AppointmentCard> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blue,
                       ),
-                      onPressed: () {},
+                      onPressed: () async {
+                        await showDialog(
+                          context: context,
+                          builder: (context) => RatingDialog(
+                            title: const Text(
+                              'Rate the doctor',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 25,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            message: const Text(
+                              'Please give doctor review for better services',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            image: const FlutterLogo(
+                              size: 30,
+                            ),
+                            initialRating: 5.0,
+                            commentHint: 'Write your feedback about doctor...',
+                            submitButtonText: 'Submit',
+                            onSubmitted: (response) async {
+                              String token =
+                                  await SharedPreferencesService.getToken() ??
+                                      '';
+
+                              if (token != '') {
+                                final result = await DioProvider()
+                                    .storeReviewAndCompleteAppointment(
+                                  token: token,
+                                  appointmentID: widget.doctor['appointments']
+                                      ['id'],
+                                  doctorID: widget.doctor['doc_id'],
+                                  ratings: response.rating.toDouble(),
+                                  reviews: response.comment.toString() ?? '',
+                                );
+
+                                if (result) {
+                                  MyApp.navigatorKey.currentState!
+                                      .pushNamedAndRemoveUntil(
+                                    '/main',
+                                    (Route<dynamic> route) => false,
+                                  );
+                                }
+                              }
+                            },
+                          ),
+                        );
+                      },
                       child: const Text(
                         'Completed',
                         style: TextStyle(

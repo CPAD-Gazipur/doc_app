@@ -159,4 +159,44 @@ class DioProvider {
       return null;
     }
   }
+
+  /// STORE REVIEW & COMPLETE APPOINTMENT
+  Future<dynamic> storeReviewAndCompleteAppointment({
+    required String token,
+    required int appointmentID,
+    required int doctorID,
+    required double ratings,
+    required String reviews,
+  }) async {
+    try {
+      var response =
+          await Dio().post('http://127.0.0.1:8000/api/complete-appointment',
+              data: {
+                'appointment_id': appointmentID,
+                'doctor_id': doctorID,
+                'ratings': ratings,
+                'reviews': reviews,
+              },
+              options: Options(
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json',
+                  'Authorization': 'Bearer $token',
+                },
+              ));
+
+      if (response.statusCode == 200 && response.data != '') {
+        if (response.data['success']) {
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        return false;
+      }
+    } catch (error) {
+      debugPrint('Appointment Completing Error: $error');
+      return false;
+    }
+  }
 }

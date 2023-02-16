@@ -5,7 +5,6 @@ import 'package:doc_app/services/services.dart';
 import 'package:doc_app/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class BookingScreen extends StatefulWidget {
@@ -30,9 +29,9 @@ class _BookingScreenState extends State<BookingScreen> {
   CalendarFormat _calendarFormat = CalendarFormat.month;
 
   Future<void> geToken() async {
-    final prefs = await SharedPreferences.getInstance();
+    final tokenTemp = await SharedPreferencesService.getToken();
     setState(() {
-      token = prefs.getString('token') ?? '';
+      token = tokenTemp ?? '';
     });
   }
 
