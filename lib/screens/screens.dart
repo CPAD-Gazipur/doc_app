@@ -7,6 +7,8 @@ export 'doctor_details/components/doctor_about_info_card_section.dart';
 export 'doctor_details/components/doctor_profile_details_section.dart';
 export 'doctor_details/components/doctor_profile_info_section.dart';
 export 'doctor_details/doctor_details_screen.dart';
+export 'favorite/favorite_screen.dart';
 export 'home/components/appointment_card.dart';
 export 'home/home_screen.dart';
+export 'profile/profile_screen.dart';
 export 'success/booking_success_screen.dart';

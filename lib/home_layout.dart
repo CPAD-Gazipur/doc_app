@@ -1,5 +1,7 @@
 import 'package:doc_app/screens/appointment/appointment_screen.dart';
+import 'package:doc_app/screens/favorite/favorite_screen.dart';
 import 'package:doc_app/screens/home/home_screen.dart';
+import 'package:doc_app/screens/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
@@ -25,7 +27,9 @@ class _HomeLayoutState extends State<HomeLayout> {
         },
         children: const [
           HomeScreen(),
+          FavoriteScreen(),
           AppointmentScreen(),
+          ProfileScreen(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -46,8 +50,16 @@ class _HomeLayoutState extends State<HomeLayout> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
+            icon: Icon(FontAwesomeIcons.solidHeart),
+            label: 'Favorite',
+          ),
+          BottomNavigationBarItem(
             icon: Icon(FontAwesomeIcons.solidCalendarCheck),
             label: 'Appointment',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(FontAwesomeIcons.solidUser),
+            label: 'Profile',
           ),
         ],
       ),
