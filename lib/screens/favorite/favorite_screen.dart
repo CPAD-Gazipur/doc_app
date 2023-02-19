@@ -38,8 +38,8 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                     itemCount: auth.getFavoriteDoctor.length,
                     itemBuilder: (context, index) {
                       return DoctorCard(
-                        route: '/doctor-details',
                         doctor: auth.getFavoriteDoctor[index],
+                        isFavorite: true,
                       );
                     },
                   );

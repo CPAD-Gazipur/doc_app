@@ -8,24 +8,33 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:provider/provider.dart';
 
 class DoctorDetailsScreen extends StatefulWidget {
-  const DoctorDetailsScreen({Key? key}) : super(key: key);
+  final Map<String, dynamic> doctor;
+  final bool isFavorite;
+
+  const DoctorDetailsScreen({
+    Key? key,
+    required this.doctor,
+    required this.isFavorite,
+  }) : super(key: key);
 
   @override
   State<DoctorDetailsScreen> createState() => _DoctorDetailsScreenState();
 }
 
 class _DoctorDetailsScreenState extends State<DoctorDetailsScreen> {
+  Map<String, dynamic> doctor = {};
   bool isFavorite = false;
 
   @override
   void initState() {
+    doctor = widget.doctor;
+    isFavorite = widget.isFavorite;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final doctor = ModalRoute.of(context)!.settings.arguments as Map;
-
+    // final doctor = ModalRoute.of(context)!.settings.arguments as Map;
     return Scaffold(
       appBar: CustomAppBar(
         title: 'Doctor Details',

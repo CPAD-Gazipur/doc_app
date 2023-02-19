@@ -192,8 +192,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         children: List.generate(
                           user['doctors'].length,
                           (index) => DoctorCard(
-                            route: '/doctor-details',
                             doctor: user['doctors'][index],
+                            isFavorite: favoriteList
+                                    .contains(user['doctors'][index]['doc_id'])
+                                ? true
+                                : false,
                           ),
                         ),
                       ),

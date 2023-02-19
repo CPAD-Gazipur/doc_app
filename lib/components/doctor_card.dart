@@ -1,14 +1,16 @@
+import 'package:doc_app/main.dart';
+import 'package:doc_app/screens/doctor_details/doctor_details_screen.dart';
 import 'package:doc_app/utils/config.dart';
 import 'package:flutter/material.dart';
 
 class DoctorCard extends StatelessWidget {
   final Map<String, dynamic> doctor;
-  final String route;
+  final bool isFavorite;
 
   const DoctorCard({
     Key? key,
-    required this.route,
     required this.doctor,
+    required this.isFavorite,
   }) : super(key: key);
 
   @override
@@ -22,7 +24,14 @@ class DoctorCard extends StatelessWidget {
       ),
       child: GestureDetector(
         onTap: () {
-          Navigator.of(context).pushNamed(route, arguments: doctor);
+          MyApp.navigatorKey.currentState!.push(
+            MaterialPageRoute(
+              builder: (context) => DoctorDetailsScreen(
+                doctor: doctor,
+                isFavorite: isFavorite,
+              ),
+            ),
+          );
         },
         child: Card(
           elevation: 5,
