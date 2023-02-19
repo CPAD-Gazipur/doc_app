@@ -31,7 +31,9 @@ class DoctorAboutInfoCardSection extends StatelessWidget {
         const SizedBox(width: 15),
         InfoCard(
           label: 'Rating',
-          value: doctor['rating'] != null ? doctor['rating'].toString() : 'N/A',
+          value: doctor['average_ratings'] != null
+              ? doctor['average_ratings'].toStringAsFixed(1)
+              : 'N/A',
         ),
       ],
     );

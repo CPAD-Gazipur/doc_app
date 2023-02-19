@@ -71,19 +71,21 @@ class DoctorCard extends StatelessWidget {
                       const Spacer(),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
-                        children: const [
-                          Icon(
+                        children: [
+                          const Icon(
                             Icons.star_border,
-                            color: Colors.yellow,
+                            color: Colors.amber,
                             size: 16,
                           ),
-                          Spacer(flex: 1),
-                          Text('4.5'),
-                          Spacer(flex: 1),
-                          Text('Reviews'),
-                          Spacer(flex: 1),
-                          Text('(20)'),
-                          Spacer(flex: 7),
+                          const Spacer(flex: 1),
+                          Text(
+                            '${doctor['average_ratings'].toStringAsFixed(1)}',
+                          ),
+                          const Spacer(flex: 1),
+                          const Text('Reviews'),
+                          const Spacer(flex: 1),
+                          Text('(${doctor['reviews'].length})'),
+                          const Spacer(flex: 7),
                         ],
                       ),
                     ],
