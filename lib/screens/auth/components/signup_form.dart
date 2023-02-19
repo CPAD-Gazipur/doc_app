@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:doc_app/components/components.dart';
 import 'package:doc_app/main.dart';
 import 'package:doc_app/models/models.dart';
 import 'package:doc_app/providers/dio_provider.dart';
+import 'package:doc_app/services/services.dart';
 import 'package:doc_app/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -89,8 +92,6 @@ class _SignupFormState extends State<SignupForm> {
                 width: double.infinity,
                 title: 'Sign Up',
                 onPressed: () async {
-                  // Navigator.of(context).pushNamed('/main');
-
                   if (_nameController.text.isNotEmpty &&
                       _emailController.text.isNotEmpty &&
                       _passwordController.text.isNotEmpty) {
@@ -100,20 +101,42 @@ class _SignupFormState extends State<SignupForm> {
                       password: _passwordController.text,
                     );
                     if (register) {
-                      final token = await DioProvider().getToken(
+                      final result = await DioProvider().getToken(
                         email: _emailController.text,
                         password: _passwordController.text,
                       );
-                      if (token) {
-                        auth.loginSuccess(
-                          userData: {},
-                          appointmentInfo: {},
-                        );
-                        MyApp.navigatorKey.currentState!
-                            .pushNamedAndRemoveUntil(
-                          '/main',
-                          (Route<dynamic> route) => false,
-                        );
+                      if (result) {
+                        final tokenTemp =
+                            await SharedPreferencesService.getToken() ?? '';
+
+                        if (tokenTemp != '') {
+                          final response = await DioProvider().getUser(
+                            token: tokenTemp.toString(),
+                          );
+
+                          if (response != '') {
+                            setState(() {
+                              Map<String, dynamic> appointment = {};
+                              final user = json.decode(response);
+
+                              for (var doctorData in user['doctors']) {
+                                if (doctorData['appointments'] != null) {
+                                  appointment = doctorData;
+                                }
+                              }
+                              auth.loginSuccess(
+                                userData: user,
+                                appointmentInfo: appointment,
+                              );
+
+                              MyApp.navigatorKey.currentState!
+                                  .pushNamedAndRemoveUntil(
+                                '/main',
+                                (Route<dynamic> route) => false,
+                              );
+                            });
+                          }
+                        }
                       }
                     } else {
                       debugPrint('Registration is not successfully');
