@@ -122,7 +122,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                             const SizedBox(width: 35),
                             TextButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                    title: const Text('Logout Warning!'),
+                                    content: const Text(
+                                        'Do you want to logout from DocApp?'),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {},
+                                        child: Text('No'),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {},
+                                        child: Text('Yes'),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
                               child: const Text(
                                 'Logout',
                                 style: TextStyle(
