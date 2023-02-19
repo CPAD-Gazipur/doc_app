@@ -1,5 +1,7 @@
 import 'package:doc_app/components/components.dart';
+import 'package:doc_app/models/auth_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class FavoriteScreen extends StatefulWidget {
   const FavoriteScreen({Key? key}) : super(key: key);
@@ -30,12 +32,16 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
             ),
             const SizedBox(height: 20),
             Expanded(
-              child: ListView.builder(
-                itemCount: 5,
-                itemBuilder: (context, index) {
-                  return const DoctorCard(
-                    route: '/doctor-details',
-                    doctor: {},
+              child: Consumer<AuthModel>(
+                builder: (context, auth, child) {
+                  return ListView.builder(
+                    itemCount: auth.getFavoriteDoctor.length,
+                    itemBuilder: (context, index) {
+                      return DoctorCard(
+                        route: '/doctor-details',
+                        doctor: auth.getFavoriteDoctor[index],
+                      );
+                    },
                   );
                 },
               ),

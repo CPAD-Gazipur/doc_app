@@ -24,7 +24,7 @@ class AuthModel extends ChangeNotifier {
     favoriteDoctor.clear();
 
     for (var num in _favoriteDoctor) {
-      for (var doc in user['doctor']) {
+      for (var doc in user['doctors']) {
         if (num == doc['doc_id']) {
           favoriteDoctor.add(doc);
         }
