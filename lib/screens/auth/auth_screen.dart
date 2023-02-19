@@ -1,10 +1,14 @@
+import 'dart:convert';
+
 import 'package:doc_app/main.dart';
 import 'package:doc_app/models/models.dart';
+import 'package:doc_app/providers/providers.dart';
 import 'package:doc_app/screens/auth/components/signup_form.dart';
 import 'package:doc_app/screens/screens.dart';
 import 'package:doc_app/services/services.dart';
 import 'package:doc_app/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({Key? key}) : super(key: key);
@@ -16,23 +20,42 @@ class AuthScreen extends StatefulWidget {
 class _AuthScreenState extends State<AuthScreen> {
   bool isSignIn = true;
 
-  checkAutoLogin() async {
-    final token = await SharedPreferencesService.getToken() ?? '';
-    if (token != '') {
-      AuthModel().loginSuccess(
-        userData: {},
-        appointmentInfo: {},
+  checkAutoLogin({required AuthModel authModel}) async {
+    final tokenTemp = await SharedPreferencesService.getToken() ?? '';
+    if (tokenTemp != '') {
+      final response = await DioProvider().getUser(
+        token: tokenTemp,
       );
-      MyApp.navigatorKey.currentState!.pushNamedAndRemoveUntil(
-        '/main',
-        (Route<dynamic> route) => false,
-      );
+
+      if (response != '') {
+        setState(() {
+          Map<String, dynamic> appointment = {};
+          final user = json.decode(response);
+
+          for (var doctorData in user['doctors']) {
+            if (doctorData['appointments'] != null) {
+              appointment = doctorData;
+            }
+          }
+
+          authModel.loginSuccess(
+            userData: user,
+            appointmentInfo: appointment,
+          );
+
+          MyApp.navigatorKey.currentState!.pushNamedAndRemoveUntil(
+            '/main',
+            (Route<dynamic> route) => false,
+          );
+        });
+      }
     }
   }
 
   @override
   void initState() {
-    checkAutoLogin();
+    AuthModel authModel = Provider.of<AuthModel>(context, listen: false);
+    checkAutoLogin(authModel: authModel);
     super.initState();
   }
 

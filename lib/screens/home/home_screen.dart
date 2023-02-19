@@ -15,7 +15,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   Map<String, dynamic> user = {};
-  Map<String, dynamic> doctor = {};
+  Map<String, dynamic> appointmentToday = {};
   List<dynamic> favoriteList = [];
 
   List<Map<String, dynamic>> medicalCategories = [
@@ -50,11 +50,12 @@ class _HomeScreenState extends State<HomeScreen> {
     Config().init(context);
 
     user = Provider.of<AuthModel>(context, listen: false).getUser;
-    doctor = Provider.of<AuthModel>(context, listen: false).getAppointment;
+    appointmentToday =
+        Provider.of<AuthModel>(context, listen: false).getAppointment;
     favoriteList = Provider.of<AuthModel>(context, listen: false).getFavorite;
 
     debugPrint('USER: $user');
-    debugPrint('DOCTOR: $doctor');
+    debugPrint('APPOINTMENTS: $appointmentToday');
     debugPrint('FAVORITE: $favoriteList');
 
     return Scaffold(
@@ -154,9 +155,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                       Config.spaceSmall,
-                      doctor.isNotEmpty
+                      appointmentToday.isNotEmpty
                           ? AppointmentCard(
-                              doctor: doctor,
+                              appointmentToday: appointmentToday,
                               color: Config.primaryColor,
                             )
                           : Container(

@@ -7,12 +7,12 @@ import 'package:flutter/material.dart';
 import 'package:rating_dialog/rating_dialog.dart';
 
 class AppointmentCard extends StatefulWidget {
-  final Map<String, dynamic> doctor;
+  final Map<String, dynamic> appointmentToday;
   final Color color;
 
   const AppointmentCard({
     Key? key,
-    required this.doctor,
+    required this.appointmentToday,
     required this.color,
   }) : super(key: key);
 
@@ -39,7 +39,7 @@ class _AppointmentCardState extends State<AppointmentCard> {
                 children: [
                   CircleAvatar(
                     backgroundImage: NetworkImage(
-                      'http://127.0.0.1:8000${widget.doctor['doctor_profile'].toString()}',
+                      'http://127.0.0.1:8000${widget.appointmentToday['doctor_profile'].toString()}',
                     ),
                   ),
                   const SizedBox(width: 10),
@@ -48,14 +48,14 @@ class _AppointmentCardState extends State<AppointmentCard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        widget.doctor['doctor_name'].toString(),
+                        widget.appointmentToday['doctor_name'].toString(),
                         style: const TextStyle(
                           color: Colors.white,
                         ),
                       ),
                       const SizedBox(height: 2),
                       Text(
-                        widget.doctor['category'].toString(),
+                        widget.appointmentToday['category'].toString(),
                         style: const TextStyle(
                           color: Colors.black,
                         ),
@@ -66,9 +66,11 @@ class _AppointmentCardState extends State<AppointmentCard> {
               ),
               Config.spaceSmall,
               ScheduleCard(
-                date: widget.doctor['appointments']['date'].toString(),
-                day: widget.doctor['appointments']['day'].toString(),
-                time: widget.doctor['appointments']['time'].toString(),
+                date:
+                    widget.appointmentToday['appointments']['date'].toString(),
+                day: widget.appointmentToday['appointments']['day'].toString(),
+                time:
+                    widget.appointmentToday['appointments']['time'].toString(),
               ),
               Config.spaceSmall,
               Row(
@@ -129,11 +131,11 @@ class _AppointmentCardState extends State<AppointmentCard> {
                                 final result = await DioProvider()
                                     .storeReviewAndCompleteAppointment(
                                   token: token,
-                                  appointmentID: widget.doctor['appointments']
-                                      ['id'],
-                                  doctorID: widget.doctor['doc_id'],
+                                  appointmentID: widget
+                                      .appointmentToday['appointments']['id'],
+                                  doctorID: widget.appointmentToday['doc_id'],
                                   ratings: response.rating.toDouble(),
-                                  reviews: response.comment.toString() ?? '',
+                                  reviews: response.comment.toString(),
                                 );
 
                                 if (result) {
