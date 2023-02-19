@@ -1,12 +1,10 @@
-import 'dart:convert';
-
 import 'package:doc_app/components/components.dart';
-import 'package:doc_app/providers/providers.dart';
+import 'package:doc_app/models/auth_model.dart';
 import 'package:doc_app/screens/screens.dart';
-import 'package:doc_app/services/services.dart';
 import 'package:doc_app/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -18,6 +16,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   Map<String, dynamic> user = {};
   Map<String, dynamic> doctor = {};
+  List<dynamic> favoriteList = [];
 
   List<Map<String, dynamic>> medicalCategories = [
     {
@@ -46,36 +45,18 @@ class _HomeScreenState extends State<HomeScreen> {
     },
   ];
 
-  Future<void> getUserData() async {
-    final token = await SharedPreferencesService.getToken() ?? '';
-
-    if (token.isNotEmpty && token != '') {
-      final response = await DioProvider().getUser(token: token);
-      if (response != null) {
-        setState(() {
-          user = json.decode(response);
-          debugPrint('USER: $user');
-
-          /// GET DOCTOR FULL INFO OF TODAY'S APPOINTMENTS
-          for (var doctorData in user['doctors']) {
-            if (doctorData['appointments'] != null) {
-              doctor = doctorData;
-            }
-          }
-        });
-      }
-    }
-  }
-
-  @override
-  void initState() {
-    getUserData();
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     Config().init(context);
+
+    user = Provider.of<AuthModel>(context, listen: false).getUser;
+    doctor = Provider.of<AuthModel>(context, listen: false).getAppointment;
+    favoriteList = Provider.of<AuthModel>(context, listen: false).getFavorite;
+
+    debugPrint('USER: $user');
+    debugPrint('DOCTOR: $doctor');
+    debugPrint('FAVORITE: $favoriteList');
+
     return Scaffold(
       body: user.isEmpty
           ? const Center(
@@ -187,8 +168,13 @@ class _HomeScreenState extends State<HomeScreen> {
                               child: const Center(
                                 child: Padding(
                                   padding: EdgeInsets.all(20),
-                                  child: Text('No Appointment Today',style: TextStyle(fontSize: 16,
-                                  fontWeight: FontWeight.w600,),),
+                                  child: Text(
+                                    'No Appointment Today',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),

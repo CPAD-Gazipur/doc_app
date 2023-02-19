@@ -105,7 +105,10 @@ class _SignupFormState extends State<SignupForm> {
                         password: _passwordController.text,
                       );
                       if (token) {
-                        auth.loginSuccess();
+                        auth.loginSuccess(
+                          userData: {},
+                          appointmentInfo: {},
+                        );
                         MyApp.navigatorKey.currentState!
                             .pushNamedAndRemoveUntil(
                           '/main',

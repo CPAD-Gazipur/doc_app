@@ -19,7 +19,10 @@ class _AuthScreenState extends State<AuthScreen> {
   checkAutoLogin() async {
     final token = await SharedPreferencesService.getToken() ?? '';
     if (token != '') {
-      AuthModel().loginSuccess();
+      AuthModel().loginSuccess(
+        userData: {},
+        appointmentInfo: {},
+      );
       MyApp.navigatorKey.currentState!.pushNamedAndRemoveUntil(
         '/main',
         (Route<dynamic> route) => false,

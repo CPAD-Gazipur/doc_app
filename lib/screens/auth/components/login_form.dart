@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:doc_app/components/custom_button.dart';
 import 'package:doc_app/main.dart';
 import 'package:doc_app/models/auth_model.dart';
 import 'package:doc_app/providers/providers.dart';
+import 'package:doc_app/services/services.dart';
 import 'package:doc_app/utils/config.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -77,16 +80,42 @@ class _LoginFormState extends State<LoginForm> {
                 onPressed: () async {
                   if (_emailController.text.isNotEmpty &&
                       _passwordController.text.isNotEmpty) {
-                    final token = await DioProvider().getToken(
+                    final result = await DioProvider().getToken(
                       email: _emailController.text,
                       password: _passwordController.text,
                     );
-                    if (token) {
-                      auth.loginSuccess();
-                      MyApp.navigatorKey.currentState!.pushNamedAndRemoveUntil(
-                        '/main',
-                        (Route<dynamic> route) => false,
-                      );
+                    if (result) {
+                      final tokenTemp =
+                          await SharedPreferencesService.getToken() ?? '';
+
+                      if (tokenTemp != '') {
+                        final response = await DioProvider().getUser(
+                          token: tokenTemp.toString(),
+                        );
+
+                        if (response != '') {
+                          setState(() {
+                            Map<String, dynamic> appointment = {};
+                            final user = json.decode(response);
+
+                            for (var doctorData in user['doctors']) {
+                              if (doctorData['appointments'] != null) {
+                                appointment = doctorData;
+                              }
+                            }
+                            auth.loginSuccess(
+                              userData: user,
+                              appointmentInfo: appointment,
+                            );
+
+                            MyApp.navigatorKey.currentState!
+                                .pushNamedAndRemoveUntil(
+                              '/main',
+                              (Route<dynamic> route) => false,
+                            );
+                          });
+                        }
+                      }
                     }
                   }
                   // Navigator.of(context).pushNamed('/main');
