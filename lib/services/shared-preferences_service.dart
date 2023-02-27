@@ -15,4 +15,10 @@ class SharedPreferencesService {
     String? token = prefs.getString('token');
     return token;
   }
+
+  /// GET TOKEN
+  static Future<void> removeToken() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('token');
+  }
 }

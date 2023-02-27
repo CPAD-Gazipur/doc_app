@@ -42,6 +42,35 @@ class DioProvider {
     }
   }
 
+  /// LOGOUT USER
+  Future<bool> logout({
+    required String token,
+  }) async {
+    try {
+      var response = await Dio().post('http://127.0.0.1:8000/api/logout',
+          options: Options(
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer $token',
+            },
+          ));
+
+      if (response.statusCode == 200 && response.data != '') {
+        if (response.data['success']) {
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        return false;
+      }
+    } catch (error) {
+      debugPrint('Appointment Completing Error: $error');
+      return false;
+    }
+  }
+
   /// GET USER DATA
   Future<dynamic> getUser({required String token}) async {
     try {

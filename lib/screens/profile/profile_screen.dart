@@ -1,3 +1,6 @@
+import 'package:doc_app/main.dart';
+import 'package:doc_app/providers/dio_provider.dart';
+import 'package:doc_app/services/services.dart';
 import 'package:doc_app/utils/config.dart';
 import 'package:flutter/material.dart';
 
@@ -131,12 +134,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         'Do you want to logout from DocApp?'),
                                     actions: [
                                       TextButton(
-                                        onPressed: () {},
-                                        child: Text('No'),
+                                        onPressed: () {
+                                          Navigator.pop(context);
+                                        },
+                                        child: const Text('No'),
                                       ),
                                       TextButton(
-                                        onPressed: () {},
-                                        child: Text('Yes'),
+                                        onPressed: () async {
+                                          String tokenTemp =
+                                              await SharedPreferencesService
+                                                      .getToken() ??
+                                                  '';
+
+                                          if (tokenTemp != '') {
+                                            bool isLogout = await DioProvider()
+                                                .logout(token: tokenTemp);
+
+                                            if (isLogout) {
+                                              await SharedPreferencesService
+                                                  .removeToken();
+                                              MyApp.navigatorKey.currentState!
+                                                  .pushNamedAndRemoveUntil(
+                                                '/',
+                                                (route) => false,
+                                              );
+                                            }
+                                          }
+                                        },
+                                        child: const Text('Yes'),
                                       ),
                                     ],
                                   ),
